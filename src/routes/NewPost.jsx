@@ -1,6 +1,6 @@
 import classes from './NewPost.module.css';
 import Modal from '../components/Modal';
-import { Link, Form } from 'react-router-dom';
+import { Link, Form, redirect } from 'react-router-dom';
 
 
 function NewPost() {
@@ -28,8 +28,9 @@ function NewPost() {
 
 export default NewPost;
 
-export function action({ request }) {
-  request.formData();
+export async function action({ request }) {
+  const formData = await request.formData();
+  const postData = Object.fromEntires(formData); // {body: '', author: '}
   fetch('http://localhost:8080/posts', {
     method: 'POST',
     body: JSON.stringify(postData),
@@ -37,4 +38,6 @@ export function action({ request }) {
       'Content-Type': 'application/json'
     }
   });
+
+  return redirect('/');
 }
