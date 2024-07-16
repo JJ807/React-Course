@@ -1,7 +1,7 @@
-import classes from './NewPost.module.css';
-import Modal from '../components/Modal';
 import { Link, Form, redirect } from 'react-router-dom';
 
+import classes from './NewPost.module.css';
+import Modal from '../components/Modal';
 
 function NewPost() {
   return (
@@ -13,7 +13,7 @@ function NewPost() {
         </p>
         <p>
           <label htmlFor="name">Your name</label>
-          <input type="text" name="author" id="name" required />
+          <input type="text" id="name" name="author" required />
         </p>
         <p className={classes.actions}>
           <Link to=".." type="button">
@@ -30,13 +30,13 @@ export default NewPost;
 
 export async function action({ request }) {
   const formData = await request.formData();
-  const postData = Object.fromEntires(formData); // {body: '', author: '}
-  fetch('http://localhost:8080/posts', {
+  const postData = Object.fromEntries(formData); // { body: '...', author: '...' }
+  await fetch('http://localhost:8080/posts', {
     method: 'POST',
     body: JSON.stringify(postData),
     headers: {
-      'Content-Type': 'application/json'
-    }
+      'Content-Type': 'application/json',
+    },
   });
 
   return redirect('/');
